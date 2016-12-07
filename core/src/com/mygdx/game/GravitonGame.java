@@ -8,26 +8,42 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GravitonGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
+	Texture ball;
+	Texture blackhole;
+
+	Ball playerBall;
+
+	int width, height;
+
+	GameInput input;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		ball = new Texture("ball.png");
+		blackhole = new Texture("blackhole.png");
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		playerBall = new Ball(ball, width / 2, height / 2);
+		input = new GameInput();
+		Gdx.input.setInputProcessor(input);
+		input.addEventListener(playerBall);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+		Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		playerBall.update();
+		playerBall.draw(batch);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		ball.dispose();
+		blackhole.dispose();
 	}
 }
